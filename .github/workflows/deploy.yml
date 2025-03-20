@@ -13,19 +13,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Add known hosts
-        run: |
-          mkdir -p ~/.ssh
-          echo "[ciss298.zenren.xyz]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGHmAKmzqRaoGgzDfqKRNsDvzZg0dAuw3Xnifm4CXHaq" >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ciss298.zenren.xyz
           username: deployuser
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: 2222
+          port: ${{ secrets.PORT }}
+          fingerprint: ${{ secrets.KNOWN_HOSTS }}
           script: |
             cd /var/www/ciss298-TeamProject
             git pull origin main

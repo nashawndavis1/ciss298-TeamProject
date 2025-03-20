@@ -37,5 +37,6 @@ jobs:
             echo "DB_HOST=localhost" > .env
             echo "DB_USER=root" >> .env
             echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+            echo "DB_NAME=testdb" >> .env
             php deploy.php
 

@@ -1,0 +1,3 @@
+<Files "deploy.php">
+    Require all denied
+</Files>

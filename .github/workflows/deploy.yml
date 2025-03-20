@@ -20,7 +20,7 @@ jobs:
           username: deployuser
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            cd /var/www/html
+            cd /var/www/ciss298-TeamProject
             git pull origin main
             echo "DB_HOST=localhost" > .env
             echo "DB_USER=root" >> .env

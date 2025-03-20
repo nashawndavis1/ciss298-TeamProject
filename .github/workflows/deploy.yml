@@ -27,3 +27,5 @@ jobs:
             echo "DB_USER=root" >> .env
             echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
             php deploy.php
+        env:
+            SSH_KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}

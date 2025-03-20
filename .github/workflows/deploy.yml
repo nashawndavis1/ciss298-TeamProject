@@ -22,4 +22,7 @@ jobs:
           script: |
             cd /var/www/html
             git pull origin main
+            echo "DB_HOST=localhost" > .env
+            echo "DB_USER=root" >> .env
+            echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
             php deploy.php

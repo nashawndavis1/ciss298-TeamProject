@@ -16,8 +16,7 @@ jobs:
       - name: Add known hosts
         run: |
           mkdir -p ~/.ssh
-          echo ${{ secrets.KNOWN_HOSTS }}
-          echo ${{ secrets.KNOWN_HOSTS }} >> ~/.ssh/known_hosts
+          echo "[ciss298.zenren.xyz]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGHmAKmzqRaoGgzDfqKRNsDvzZg0dAuw3Xnifm4CXHaq" >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
       - name: Deploy via SSH

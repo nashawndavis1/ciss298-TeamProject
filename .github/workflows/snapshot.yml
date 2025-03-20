@@ -1,0 +1,18 @@
+name: Manual Snapshot
+
+on:
+  workflow_dispatch:  # Allows manual execution in GitHub Actions
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into Server and Run Snapshot Script
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ciss298.zenren.xyz
+          username: deployuser
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            bash /var/www/ciss298-TeamProject/snapshot.sh ${{ github.event.inputs.week_num }}

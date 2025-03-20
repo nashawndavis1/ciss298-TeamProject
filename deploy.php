@@ -1,7 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "your-mysql-password";
+$env = parse_ini_file(__DIR__ . "/.env");
+$servername = $env['DB_HOST'];
+$username = $env['DB_USER'];
+$password = $env['DB_PASS'];
 $dbname = "testdb";
 
 // Create connection

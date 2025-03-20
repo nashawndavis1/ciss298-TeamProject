@@ -16,6 +16,7 @@ $password = $env['DB_PASS'];
 $dbname = $env['DB_NAME'];
 $conn = new mysqli($servername, $username, $password, $dbname);
 ```
+Should a PR be pushed without the correct connection string, verification will fail for the PR and propting you to change the files.
 
 # SQL Layout
 To ensure consistency between developement and production, use the following structure in your database:

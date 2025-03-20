@@ -1,0 +1,25 @@
+name: Check Database Connection
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-php:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Find PHP Files With DB Connection
+        run: |
+          DB_FILES=$(grep -rl "new mysqli" $(find . -type f -name "*.php"))
+          if [[ -n "$DB_FILES" ]]; then
+            for FILE in $DB_FILES; do
+              if ! grep -q "parse_ini_file" "$FILE"; then
+                echo "ERROR: '$FILE' is connecting to MySQL without using '.env'!"
+                exit 1
+              fi
+            done
+          fi

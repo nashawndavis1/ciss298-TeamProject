@@ -1,4 +1,8 @@
 <?php
+if (php_sapi_name() !== 'cli') {
+    http_response_code(403);
+    exit("Access Denied.");
+}
 $env = parse_ini_file(__DIR__ . "/.env");
 $servername = $env['DB_HOST'];
 $username = $env['DB_USER'];

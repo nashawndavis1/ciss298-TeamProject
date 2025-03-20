@@ -19,6 +19,7 @@ jobs:
           host: ciss298.zenren.xyz
           username: deployuser
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 2222
           script: |
             cd /var/www/ciss298-TeamProject
             git pull origin main

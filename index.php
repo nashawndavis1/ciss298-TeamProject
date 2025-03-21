@@ -1,45 +1,27 @@
 <?php
-$env = parse_ini_file(__DIR__ . "/.env");
-$servername = $env['DB_HOST'];
-$username = $env['DB_USER'];
-$password = $env['DB_PASS'];
-$dbname = $env['DB_NAME'];
-
-// Connect to the database
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Create a test table if it doesn't exist
-$sql = "CREATE TABLE IF NOT EXISTS test_table (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    data VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)";
-if ($conn->query($sql) === FALSE) {
-    die("Error creating table: " . $conn->error);
-}
-
-// Insert a test row
-$randomData = "TestData_" . rand(1000, 9999);
-$sql = "INSERT INTO test_table (data) VALUES ('$randomData')";
-if ($conn->query($sql) === FALSE) {
-    die("Error inserting data: " . $conn->error);
-}
-
-// Fetch all data from the table
-$result = $conn->query("SELECT * FROM test_table");
-
-if ($result->num_rows > 0) {
-    echo "<h2>Stored Data:</h2><ul>";
-    while ($row = $result->fetch_assoc()) {
-        echo "<li>ID: " . $row["id"] . " - Data: " . $row["data"] . " - Created At: " . $row["created_at"] . "</li>";
-    }
-    echo "</ul>";
-} else {
-    echo "No data found.";
-}
-$conn->close();
+$page = $_GET['page'] ?? 'home';
+//$safe_page = preg_replace("/[^a-zA-Z0-9_-]/", "", $page);
+//$file_html = "pages/$safe_page.html";
+//$file_php = "pages/$safe_page.php";
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><?php echo ucfirst($safe_page); ?></title>
+  <script src="script.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+</head>
+<body>
+  <div id="header-container"><?php include "templates/header.html"; ?></div>
+
+  <main id="content-container">
+  </main>
+
+  <div id="footer-container"><?php include "templates/footer.html"; ?></div>
+</body>
+</html>
+

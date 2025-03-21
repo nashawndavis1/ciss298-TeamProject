@@ -1,0 +1,22 @@
+name: Initialize Database Schema
+
+on:
+  workflow_dispatch:  # Enables manual trigger
+
+jobs:
+  init:
+    name: Run setup/init.php on server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run init.php over SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ccis298.zenren.xyz
+          username: deployuser
+          port: ${{ secrets.DEPLOY_PORT }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /var/www/ciss298-TeamProject
+            php setup/init.php
+

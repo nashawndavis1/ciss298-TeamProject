@@ -2,6 +2,10 @@
 The website will automatically build here:
 https://ciss298.zenren.xyz
 
+# First Run
+- Clone the repository to the web server docs folder.
+- Navigate to `localhost/setup/init.php` or int the cli: `php <path to web server>/setup/init.php`
+
 # Snapshots
 Weekly snapshots will be made for submission. They will be hosted on the site like:\
 `https://ciss298.zenren.xyz/weekX`\

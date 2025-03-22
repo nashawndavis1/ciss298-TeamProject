@@ -12,7 +12,7 @@ jobs:
       - name: Run init.php over SSH
         uses: appleboy/ssh-action@v1.2.2
         with:
-          host: ccis298.zenren.xyz
+          host: ciss298.zenren.xyz
           username: deployuser
           port: ${{ secrets.DEPLOY_PORT }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}

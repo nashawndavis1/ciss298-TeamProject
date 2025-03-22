@@ -13,7 +13,6 @@ if (!$conn->select_db($dbname)) {
 $schema = file_get_contents(__DIR__ . '/schema.sql');
 if ($conn->multi_query($schema)) {
   do {
-    // Skip results if any
     $conn->store_result();
   } while ($conn->more_results() && $conn->next_result());
 

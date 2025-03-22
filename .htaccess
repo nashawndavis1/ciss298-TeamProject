@@ -10,6 +10,11 @@
 <FilesMatch "(^\.git|composer\.json|composer\.lock|package\.json|node_modules)">
   Require all denied
 </FilesMatch>
+<Files "checkAvailability.php">
+  <Limit GET>
+    Deny from all
+  </Limit>
+</Files>
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f

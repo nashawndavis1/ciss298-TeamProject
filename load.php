@@ -3,15 +3,13 @@
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
 
-header("Content-Type: text/html"); // Ensure it's readable
+header("Content-Type: text/html");
 
-// Check if a page was requested
 if ($_SERVER["REQUEST_METHOD"] !== "GET" || empty($_GET['page'])) {
   http_response_code(403);
   exit("403 Forbidden");
 }
 
-// Sanitize page name
 $page = preg_replace("/[^a-zA-Z0-9_-]/", "", $_GET['page']);
 $htmlFile = __DIR__ . "/pages/{$page}.html";
 $phpFile = __DIR__ . "/pages/{$page}.php";

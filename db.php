@@ -1,5 +1,5 @@
 <?php
-header("Content-Type: application/json");
+//header("Content-Type: application/json");
 
 // Check if running on Windows (XAMPP)
 if (strtoupper(substr(PHP_OS, 0, 3)) === "WIN") {

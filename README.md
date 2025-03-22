@@ -26,9 +26,9 @@ DB NAME: hotel
 ```
 
 # Dynamic Page Loading
-The main page will load the content of other webpages without a full reload of the page. This is a very fast and smooth operation and it also simplifies the code required to write a page. You only need to write the content that would be contained in the <main> block. For example if home.html was:
+The main page will load the content of other webpages without a full reload of the page. This is a very fast and smooth operation and it also simplifies the code required to write a page. You only need to write the content that would be contained in the `<main>` block. For example if home.html was:
 ```
 <h1>Welcome!</h1>
 <p>This is the home page.</p>
 ```
-You would see the formatted contents in the body of the main page (index.php). This is not limited to html, php can be incorporated just by adding a <?php block, as well as javascript with a <script> block.
+You would see the formatted contents in the body of the main page (index.php). This is not limited to html, php can be incorporated just by adding a `<?php` block, as well as javascript with a `<script>` block.

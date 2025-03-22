@@ -20,8 +20,11 @@ $page = $_GET['page'] ?? 'home';
 <body class="d-flex flex-column min-vh-100">
   <div id="header-container"><?php include "templates/header.html"; ?></div>
 
-  <main id="content-container" class="flex-grow-1 container py-4">
-  </main>
+  <div class="container-fluid flex-grow-1 d-flex flex-column flex-lg-row p-0">
+    <main id="content-container" class="flex-grow-1 p-4"></main>
+
+    <aside id="aside-container" class="d-none p-3"></aside>
+  </div>
 
   <div id="footer-container"><?php include "templates/footer.html"; ?></div>
 </body>

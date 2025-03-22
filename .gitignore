@@ -1,5 +1,4 @@
 /.env
-*.sql
 *.log
 week*/
 */.DS_Store

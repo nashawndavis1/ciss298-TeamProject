@@ -14,3 +14,12 @@ CREATE TABLE IF NOT EXISTS reservation(
   CONSTRAINT pk_reservation PRIMARY KEY (reservation_id),
   CONSTRAINT fk_reservation_room_type FOREIGN KEY (room_type_id) REFERENCES room_type(room_type_id)
 );
+
+CREATE TABLE IF NOT EXISTS testimonials (
+    testimonial_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(64) NOT NULL,
+    comment TEXT NOT NULL,
+    photo VARCHAR(255) DEFAULT NULL,
+    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -18,12 +18,44 @@ function loadPage(page) {
       history.pushState(null, "", `?page=${fullFile}`);
 
       loadAside(pageName);
+      loadForm(pageName);
+      loadBootstrap();
     })
     .catch(error => {
       console.error(`Error loading ${pageName}:`, error);
       document.getElementById("content-container").innerHTML = "<h1>404 Not Found</h1>";
     });
 }
+
+
+function loadForm(page) {
+  const normalizedPage = page.replace(/\.(php|html)$/, "");
+  const forms = document.getElementsByClassName('loadForm');
+  Array.from(forms).forEach(form => {
+    console.log("Binding to form:", form);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent default form submission
+      const formData = new FormData(form);
+
+      const formPhpFile = `${normalizedPage}Form.php`;  // Dynamically build the PHP file name
+
+      fetch(formPhpFile, {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => response.text())
+        .then(result => {
+          console.log(result);
+          document.getElementById('content-container').innerHTML = result; // Update content
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Something went wrong!');
+        });
+    });
+  });
+}
+
 
 function loadAside(page) {
   const asideContainer = document.getElementById("aside-container");
@@ -97,3 +129,66 @@ function attachAvailabilityFormHandler() {
   });
 }
 
+function attachReservationFormHandler() {
+  console.log("Binding reservation form");
+
+  const form = document.getElementById("reservationForm");
+  if (!form) {
+    console.log("❌ Reservation form not found");
+    return;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+      // Use fetch to send data to processReservation.php
+      fetch('processReservation.php', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.text())  // Handle the response as text
+      .then(result => {
+        // Update the content area with the result (success or error message)
+        document.getElementById('content-container').innerHTML = result;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Something went wrong!');
+      });
+  });
+}
+
+function attachTestimonialFormHandler() {
+  console.log("Binding to testimonial form");
+
+  const form = document.getElementById("testimonialForm");
+  if (!form) return;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();  // Prevent the default form submission
+
+    const formData = new FormData(form);
+
+    // Submit the form data to the same page using fetch (no full page reload)
+    fetch("", {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.text())  // Handle the response as text
+    .then(result => {
+      document.getElementById('testimonialsResult').innerHTML = result;  // Update with success message or errors
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Something went wrong!');
+    });
+  });
+}
+
+// Helper function to jumpstart any Bootstrap not working due to dynamic loading
+function loadBootstrap() {
+  var carouselElement = document.querySelector('#carouselExample');
+  if (!carouselElement) return;
+  var carousel = new bootstrap.Carousel(carouselElement);
+}

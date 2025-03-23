@@ -1,4 +1,4 @@
-<aside class="border rounded p-3">
+<aside class="border rounded p-3 asideForm">
   <h4>Check Availability</h4>
   <form id="availability-form">
     <label for="checkin">Check In:</label>
@@ -11,7 +11,7 @@
     <select id="roomtype" name="roomtype" required>
       <?php
       require_once __DIR__ . '/../db.php';
-      $res = $conn->query("SELECT room_type_id, room_type_name FROM room_type");
+      $res = $conn->query("SELECT room_type_id, room_type_name FROM room_type ORDER BY room_type_id");
       while ($row = $res->fetch_assoc()) {
         echo "<option value='{$row['room_type_id']}'>{$row['room_type_name']}</option>";
       }

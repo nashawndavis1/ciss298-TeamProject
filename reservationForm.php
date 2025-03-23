@@ -39,13 +39,18 @@ if ($available > 0) {
     $stmt->bind_param("isss", $roomTypeId, $checkInDate, $checkOutDate, $confirmNumber);
     if ($stmt->execute()) {
         $_SESSION['availability'] = "✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>";
-        echo "✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>";
+        echo "<div class='m-5 alert alert-success text-center' role='alert'>
+        ✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>
+      </div>";
+
     } else {
         echo "❌ Reservation failed.";
     }
     $stmt->close();
 } else {
-    echo "❌ Sorry, no rooms available. Try another date or room type.";
+echo "<div class='m-5 alert alert-danger text-center' role='alert'>
+        ❌ Sorry, no rooms available. Try another date or room type.
+      </div>";
 }
 
 $_SESSION['checkin'] = $checkInDate;

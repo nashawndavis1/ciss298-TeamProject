@@ -34,4 +34,4 @@ The main page will load the content of other webpages without a full reload of t
 You would see the formatted contents in the body of the main page (index.php). This is not limited to html, php can be incorporated just by adding a `<?php` block, as well as javascript with a `<script>` block.
 
 # Forms and POST
-Due to the dynamic page loading the way forms are handled is a it different. The expected way to submit data is through JS, which will automatically fetch `${yourPageName}Form.php to do any back end tasks. The page containing the form will almost always be plain HTML, however PHP that recieves data from the server is also allowed.
+Due to the dynamic page loading the way forms are handled is a it different. The expected way to submit data is through JS, which will automatically fetch `${yourPageName}Form.php` to do any back end tasks. The page containing the form will almost always be plain HTML, however PHP that recieves data from the server is also allowed.

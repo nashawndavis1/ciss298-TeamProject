@@ -17,7 +17,7 @@ $page = $_GET['page'] ?? 'home';
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
-  <div id="header-container"><?php include "templates/header.html"; ?></div>
+  <div id="header-container"><?php include "templates/header.php"; ?></div>
 
   <div class="container-fluid flex-grow-1 d-flex flex-column flex-lg-row p-0">
     <main id="content-container" class="flex-grow-1"></main>

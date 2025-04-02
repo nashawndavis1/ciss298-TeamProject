@@ -34,6 +34,31 @@ if ($count == 0) {
   echo "Room types already exist, skipping.\n";
 }
 
+$res = $conn->query("SELECT COUNT(*) AS count FROM users");
+$count = $res ? $res->fetch_assoc()['count'] : 0;
+
+if ($count == 0) {
+  echo "Seeding test users...<br>";
+  $adminPass = password_hash('admin', PASSWORD_DEFAULT);
+  $userPass  = password_hash('user', PASSWORD_DEFAULT);
+
+  $stmt = $conn->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)");
+
+  $admin = ['admin', $adminPass, 1];
+  $user  = ['user',  $userPass,  0];
+
+  $stmt->bind_param("ssi", ...$admin);
+  $stmt->execute();
+
+  $stmt->bind_param("ssi", ...$user);
+  $stmt->execute();
+
+  $stmt->close();
+  echo "Users inserted.<br>";
+} else {
+  echo "Users already exist, skipping.<br>";
+}
+
 $conn->close();
 ?>
 

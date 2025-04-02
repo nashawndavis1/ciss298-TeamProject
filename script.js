@@ -28,6 +28,7 @@ function loadPage(page) {
       loadAside(pageName);
       loadForm(pageName);
       loadBootstrap();
+      showSession();
     })
     .catch(error => {
       console.error(`Error loading ${pageName}:`, error);
@@ -38,12 +39,13 @@ function loadPage(page) {
     });
 }
 
-
 function loadForm(page) {
   const normalizedPage = page.replace(/\.(php|html)$/, "");
   const forms = document.getElementsByClassName('loadForm');
+
   Array.from(forms).forEach(form => {
     console.log("Binding to form:", form);
+
     form.addEventListener('submit', function (e) {
       e.preventDefault(); // Prevent default form submission
       const formData = new FormData(form);
@@ -54,10 +56,23 @@ function loadForm(page) {
         method: 'POST',
         body: formData,
       })
-        .then(response => response.text())
+        .then(response => {
+          const contentType = response.headers.get("Content-Type") || "";
+          return contentType.includes("application/json")
+            ? response.json()
+            : response.text();
+        })
         .then(result => {
-          console.log(result);
-          document.getElementById('content-container').innerHTML = result; // Update content
+          if (typeof result === "object" && result.status === "success") {
+            document.getElementById('content-container').innerHTML = result.message;
+
+            if (result.refreshHeader) {
+              refreshHeader();
+              showSession();
+            }
+          } else {
+            document.getElementById('content-container').innerHTML = result;
+          }
         })
         .catch(error => {
           console.error('Error:', error);
@@ -67,10 +82,9 @@ function loadForm(page) {
   });
 }
 
-
 function loadAside(page) {
   const asideContainer = document.getElementById("aside-container");
-  const excludedPages = ["test", "test2",];
+  const excludedPages = ["login", "signup",];
   const normalizedPage = page.replace(/\.(php|html)$/, "");
 
   if (!excludedPages.includes(normalizedPage)) {
@@ -207,3 +221,28 @@ function loadBootstrap() {
   if (!carouselElement) return;
   var carousel = new bootstrap.Carousel(carouselElement);
 }
+
+function refreshHeader() {
+  fetch("templates/header.php")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("header-container").innerHTML = html;
+    })
+    .catch(err => console.error("Header update failed:", err));
+}
+
+function logoutUser() {
+  fetch('/logout.php')
+    .then(() => {
+      refreshHeader();     // reload header
+      loadPage("home");    // go back to homepage or login
+    });
+}
+
+function showSession() {
+  fetch("session.php")
+    .then(res => res.json())
+    .then(data => console.log("Session Data:", data))
+    .catch(err => console.error("Session debug failed:", err));
+}
+

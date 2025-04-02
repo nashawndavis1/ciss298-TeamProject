@@ -15,7 +15,7 @@
     <?php
     require_once __DIR__ . '/../db.php';
     $result = $conn->query("SELECT filename FROM gallery ORDER BY uploaded_at DESC");
-    $uploadDir = "/uploads/gallery/";
+    $uploadDir = "/gallery/";
 
     while ($row = $result->fetch_assoc()):
     $src = $uploadDir . htmlspecialchars($row['filename']);

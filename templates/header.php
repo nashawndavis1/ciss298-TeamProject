@@ -34,7 +34,7 @@
             </a>
             <ul class="dropdown-menu text-end" aria-labelledby="moreDropdown">
               <li><a class="dropdown-item" href="#" onclick="loadPage('faq')" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">FAQ</a></li>
-              <li><a class="dropdown-item" href="#" onclick="loadPage('gallery')" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Gallery</a></li>
+              <li><a class="dropdown-item" href="#" onclick="loadPage('gallery.php')" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Gallery</a></li>
             </ul>
           </li>
         </ul>

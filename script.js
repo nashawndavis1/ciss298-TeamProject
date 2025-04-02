@@ -1,4 +1,12 @@
+let isPageLoading = false;
+
 function loadPage(page) {
+  if (isPageLoading) {
+    console.log("Page is already loading. Skipping...");
+    return;
+  }
+
+  isPageLoading = true;
   const extension = page.endsWith(".php") ? "php" : "html";
   const pageName = page.replace(/\.(php|html)$/, "");
   const fullFile = `${pageName}.${extension}`;
@@ -15,7 +23,7 @@ function loadPage(page) {
     })
     .then(data => {
       document.getElementById("content-container").innerHTML = data;
-      history.pushState(null, "", `?page=${fullFile}`);
+      history.pushState({ page: pageName }, pageName, `?page=${fullFile}`);
 
       loadAside(pageName);
       loadForm(pageName);
@@ -24,6 +32,9 @@ function loadPage(page) {
     .catch(error => {
       console.error(`Error loading ${pageName}:`, error);
       document.getElementById("content-container").innerHTML = "<h1>404 Not Found</h1>";
+    })
+    .finally(() => {
+      isPageLoading = false; // Reset the flag when the loading is finished
     });
 }
 
@@ -85,15 +96,19 @@ function loadAside(page) {
 
 // Handle refreshes
 window.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const queryPage = params.get("page") || "home";
-  loadPage(queryPage);
+  if (!isPageLoading) {
+    const params = new URLSearchParams(window.location.search);
+    const queryPage = params.get("page") || "home";
+    loadPage(queryPage);
+  }
 });
 
 window.addEventListener("popstate", () => {
-  const params = new URLSearchParams(window.location.search);
-  const queryPage = params.get("page") || "home";
-  loadPage(queryPage);
+  if (!isPageLoading) {
+    const params = new URLSearchParams(window.location.search);
+    const queryPage = params.get("page") || "home";
+    loadPage(queryPage);
+  }
 });
 
 function attachAvailabilityFormHandler() {

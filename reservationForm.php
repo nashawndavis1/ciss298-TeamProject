@@ -3,57 +3,76 @@ session_start();
 require_once __DIR__ . '/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    exit('Access Denied');
+  http_response_code(405);
+  exit('Access Denied');
 }
 
 $checkInDate = $_POST['checkin'];
 $checkOutDate = $_POST['checkout'];
 $roomTypeId = $_POST['roomType'];
 $confirmNumber = uniqid();
+$userId = $_SESSION['user']['id'] ?? null;
 
-// Get room count
-$sql = "SELECT total_room FROM room_type WHERE room_type_id = $roomTypeId";
-$res = $conn->query($sql);
-$room = $res->fetch_object();
-$roomCount = $room->total_room ?? 0;
+// Get total rooms of the type
+$sql = "SELECT total_room FROM room_type WHERE room_type_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $roomTypeId);
+$stmt->execute();
+$stmt->bind_result($roomCount);
+$stmt->fetch();
+$stmt->close();
 
-// Count reserved
-$sql = "SELECT COUNT(*) AS roomReserved FROM reservation
-        WHERE room_type_id = $roomTypeId AND (
-          (begin_date <= '$checkInDate' AND end_date > '$checkInDate') OR
-          (begin_date < '$checkOutDate' AND end_date >= '$checkOutDate') OR
-          (begin_date >= '$checkInDate' AND end_date <= '$checkOutDate')
+// Count overlapping reservations
+$sql = "SELECT COUNT(*) FROM reservation
+        WHERE room_type_id = ? AND (
+          (begin_date <= ? AND end_date > ?) OR
+          (begin_date < ? AND end_date >= ?) OR
+          (begin_date >= ? AND end_date <= ?)
         )";
-$res = $conn->query($sql);
-$row = $res->fetch_object();
-$roomTaken = $row->roomReserved ?? 0;
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("issssss", $roomTypeId, $checkInDate, $checkInDate, $checkOutDate, $checkOutDate, $checkInDate, $checkOutDate);
+$stmt->execute();
+$stmt->bind_result($roomTaken);
+$stmt->fetch();
+$stmt->close();
 
 $available = $roomCount - $roomTaken;
 
 if ($available > 0) {
-    // Insert reservation
+  // Insert reservation (with or without user ID)
+  if ($userId) {
+    $sql = "INSERT INTO reservation (room_type_id, begin_date, end_date, confirm_number, user_id)
+            VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isssi", $roomTypeId, $checkInDate, $checkOutDate, $confirmNumber, $userId);
+  } else {
     $sql = "INSERT INTO reservation (room_type_id, begin_date, end_date, confirm_number)
             VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("isss", $roomTypeId, $checkInDate, $checkOutDate, $confirmNumber);
-    if ($stmt->execute()) {
-        $_SESSION['availability'] = "✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>";
-        echo "<div class='m-5 alert alert-success text-center' role='alert'>
-        ✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>
-      </div>";
+  }
 
-    } else {
-        echo "❌ Reservation failed.";
-    }
-    $stmt->close();
+  if ($stmt->execute()) {
+    $_SESSION['availability'] = "✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>";
+    $_SESSION['last_confirmation'] = $confirmNumber;
+    echo "<div class='m-5 alert alert-success text-center' role='alert'>
+            ✅ Reservation successful! Confirmation number: <strong>$confirmNumber</strong>
+          </div>";
+  } else {
+    echo "<div class='m-5 alert alert-danger text-center' role='alert'>
+            ❌ Reservation failed. Please try again.
+          </div>";
+  }
+  $stmt->close();
 } else {
-echo "<div class='m-5 alert alert-danger text-center' role='alert'>
-        ❌ Sorry, no rooms available. Try another date or room type.
-      </div>";
+  echo "<div class='m-5 alert alert-danger text-center' role='alert'>
+          ❌ Sorry, no rooms available. Try another date or room type.
+        </div>";
 }
 
+// Store dates in session (for convenience)
 $_SESSION['checkin'] = $checkInDate;
 $_SESSION['checkout'] = $checkOutDate;
+
 $conn->close();
 ?>

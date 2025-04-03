@@ -59,6 +59,20 @@ if ($count == 0) {
   echo "Users already exist, skipping.<br>";
 }
 
+$checkColumn = $conn->query("SHOW COLUMNS FROM reservation LIKE 'user_id'");
+if ($checkColumn->num_rows === 0) {
+  echo "Adding 'user_id' column to reservation table...\n";
+  $alter = "ALTER TABLE reservation ADD COLUMN user_id INT DEFAULT NULL, 
+            ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL";
+  if (!$conn->query($alter)) {
+    echo "Error adding user_id column: " . $conn->error . "\n";
+  } else {
+    echo "'user_id' column added.\n";
+  }
+} else {
+  echo "'user_id' column already exists, skipping.\n";
+}
+
 $conn->close();
 ?>
 

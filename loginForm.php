@@ -9,7 +9,7 @@ $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if ($username && $password) {
-  $stmt = $conn->prepare("SELECT username, password, is_admin FROM users WHERE username = ?");
+  $stmt = $conn->prepare("SELECT id, username, password, is_admin FROM users WHERE username = ?");
   $stmt->bind_param("s", $username);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -21,6 +21,7 @@ if ($username && $password) {
     if (password_verify($password, $hashed_password)) {
       // Login successful
       $_SESSION['user'] = [
+        'id' => $user['id'],
         'username' => $user['username'],
         'is_admin' => (bool)$user['is_admin']
       ];

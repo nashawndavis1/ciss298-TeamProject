@@ -55,12 +55,13 @@
                   <?= htmlspecialchars($_SESSION['user']['username']) ?><?= $_SESSION['user']['is_admin'] ? ' (Admin)' : '' ?>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end text-end" aria-labelledby="userDropdown">
+                  <li><a class="dropdown-item" href="#" onclick="loadPage('myReservations.php')" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">My Reservations</a></li>
                   <li><a class="dropdown-item" href="#" onclick="logoutUser()">Log Out</a></li>
                 </ul>
               </div>
             <?php else: ?>
-              <a href="#" onclick="loadPage('login.php')" class="btn btn-outline-light btn-sm emphasis-button py-2">&nbsp;Login&nbsp;</a>
-              <a href="#" onclick="loadPage('signup')" class="btn btn-success btn-sm emphasis-button py-2">Sign Up</a>
+              <a href="#" onclick="loadPage('login.php')" class="btn btn-outline-light btn-sm emphasis-button py-2" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">&nbsp;Login&nbsp;</a>
+              <a href="#" onclick="loadPage('signup.php')" class="btn btn-success btn-sm emphasis-button py-2" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Sign Up</a>
             <?php endif; ?>
           </div>
         </div>

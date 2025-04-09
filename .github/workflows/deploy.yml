@@ -23,10 +23,6 @@ jobs:
           source: "."
           target: "/var/www/ciss298-TeamProject"
           strip_components: 1
-          rm: true
-          exclude: |
-            .git
-            .github
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.2

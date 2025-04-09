@@ -48,14 +48,24 @@ require_once __DIR__ . '/../db.php';
   $result = $conn->query("SELECT * FROM events ORDER BY start_date DESC, start_time DESC");
   while ($row = $result->fetch_assoc()):
   ?>
-    <div class="border p-3 mb-4">
-      <h4><?= htmlspecialchars($row['title']) ?></h4>
-      <p class="mb-1"><strong><?= htmlspecialchars($row['location']) ?></strong></p>
-      <p class="mb-1"><?= htmlspecialchars($row['description']) ?></p>
-      <p class="text-muted small">
-        <?= htmlspecialchars($row['start_date']) ?> <?= $row['end_date'] ? " - " . htmlspecialchars($row['end_date']) : '' ?>
-        <?= htmlspecialchars($row['start_time']) ?> to <?= htmlspecialchars($row['end_time']) ?>
-      </p>
-    </div>
+<div class="card mb-4 shadow-sm">
+  <div class="card-body bg-light border rounded">
+    <h5 class="card-title text-dark"><?= htmlspecialchars($row['title']) ?></h5>
+    <p class="card-text text-dark"><?= nl2br(htmlspecialchars($row['description'])) ?></p>
+    <hr>
+    <p class="card-text text-muted mb-1">
+      <strong>📍 Location:</strong> <?= htmlspecialchars($row['location']) ?>
+    </p>
+    <p class="card-text text-muted mb-1">
+      <strong>📅 Date:</strong>
+      <?= htmlspecialchars($row['start_date']) ?>
+      <?= $row['end_date'] ? ' to ' . htmlspecialchars($row['end_date']) : '' ?>
+    </p>
+    <p class="card-text text-muted">
+      <strong>⏰ Time:</strong>
+      <?= htmlspecialchars(substr($row['start_time'], 0, 5)) ?> - <?= htmlspecialchars(substr($row['end_time'], 0, 5)) ?>
+    </p>
+  </div>
+</div>
   <?php endwhile; ?>
 </div>

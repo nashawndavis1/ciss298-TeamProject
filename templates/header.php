@@ -55,7 +55,12 @@
                   <?= htmlspecialchars($_SESSION['user']['username']) ?><?= $_SESSION['user']['is_admin'] ? ' (Admin)' : '' ?>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end text-end" aria-labelledby="userDropdown">
-                  <li><a class="dropdown-item" href="#" onclick="loadPage('myReservations.php')" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">My Reservations</a></li>
+                  <?php if (isset($_SESSION['user']) && !$_SESSION['user']['is_admin']): ?>
+                    <li><a class="dropdown-item" href="#" onclick="loadPage('myReservations.php')" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">My Reservations</a></li>
+                  <?php endif; ?>
+                  <?php if ($_SESSION['user']['is_admin']): ?>
+                    <li><a class="dropdown-item" href="#" onclick="loadPage('editRooms.php')">Manage Room Types</a></li>
+                  <?php endif; ?>
                   <li><a class="dropdown-item" href="#" onclick="logoutUser()">Log Out</a></li>
                 </ul>
               </div>

@@ -1,3 +1,13 @@
+<style>
+  p.current-weather { min-height: 100px; }
+  .forecast-list li { min-height: 100px; }
+  .weather-page { min-height: 620px; }
+  .weather-icon {
+    width: 100px;
+    height: 100px;
+  }
+</style>
+
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -49,10 +59,10 @@ foreach ($forecastList as $entry) {
 ?>
 
 <!-- Display Weather -->
-<div class="m-5">
+<div class="m-5 weather-page">
     <h2>Current Weather in <?= htmlspecialchars($city) ?></h2>
-    <p>
-        <img class="weather-icon" src="<?= $iconUrl ?>" alt="Weather Icon" style="vertical-align: middle;">
+    <p class="current-weather">
+        <img class="weather-icon" src="<?= $iconUrl ?>" style="vertical-align: middle;">
         <strong><?= $currentDesc ?></strong>
     </p>
     <div class="weather-data">
@@ -66,7 +76,7 @@ foreach ($forecastList as $entry) {
     </div>
 
     <h2 class="m-4">3-Day Forecast</h2>
-    <ul>
+    <ul class="forecast-list">
     <?php foreach ($dailyForecasts as $day):
         $date = date("l, M j", $day['dt']);
         $desc = ucfirst($day['weather'][0]['description']);
@@ -75,7 +85,7 @@ foreach ($forecastList as $entry) {
         $iconUrl = "https://openweathermap.org/img/wn/{$icon}@2x.png";
     ?>
         <li>
-            <img src="<?= $iconUrl ?>" alt="Forecast Icon" style="vertical-align: middle;">
+            <img class="weather-icon" src="<?= $iconUrl ?>" style="vertical-align: middle;">
             <strong><?= $date ?>:</strong> <?= $desc ?>, <?= $temp ?>°
         </li>
     <?php endforeach; ?>

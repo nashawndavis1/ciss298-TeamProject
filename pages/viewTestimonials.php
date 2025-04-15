@@ -22,9 +22,9 @@ require_once __DIR__ . '/../db.php';
           echo "</div>";
 
           // Display the name, comment, and date
-          echo "<h5 class='mb-2'>{$row['name']}</h5>";
-          echo "<p class='mb-2'>{$row['comment']}</p>";
-          echo "<small>Submitted on: {$row['date_added']}</small>";
+          echo "<h5 class='mb-2'>{htmlspecialchar($row['name'])}</h5>";
+          echo "<p class='mb-2'>{htmlspecialchar($row['comment'])}</p>";
+          echo "<small>Submitted on: {htmlspecialchar($row['date_added'])}</small>";
 
           echo "</div>";
           echo "</div>";
